@@ -1,23 +1,42 @@
 <app-navbar></app-navbar>
 <div class="container mx-auto flex mt-10">
   <div class="w-1/5 mr-4">
-    <ul class="flex flex-col font-bold text-gray-700">
+    <ul class="flex flex-col font-bold text-gray-700 mb-10">
       <li *ngFor="let item of menu">
         <a
           class="block hover:bg-sky-100 hover:rounded py-1 px-3 hover:text-sky-700"
-          ><fa-icon [icon]="item.icon"></fa-icon> {{ item.title }}</a
+          ><fa-icon [icon]="item.icon"></fa-icon> {{ item.label }}</a
         >
       </li>
     </ul>
     <cdk-accordion>
       <cdk-accordion-item #accordionMenu="cdkAccordionItem">
-        <button type="button" (click)="accordionMenu.toggle()">
+        <button
+          class="w-full py-1 px-2 flex justify-between items-center text-sm text-gray-600 font-semibold"
+          type="button"
+          (click)="accordionMenu.toggle()"
+        >
           My workspace
+          <fa-icon
+            [icon]="accordionMenu.expanded ? faChevronUp : faChevronDown"
+          ></fa-icon>
         </button>
-        <div [style.display]="accordionMenu.expanded ? '' : 'none'">
-          Panel
-          <p>asd</p>
-          <p>asd</p>
+        <div
+          [ngClass]="{
+            hidden: !accordionMenu.expanded,
+            block: accordionMenu.expanded
+          }"
+        >
+          <ul class="ml-2 flex flex-col text-sm text-gray-700">
+            <li *ngFor="let item of workspaceMenu">
+              <a
+                class="block py-1 px-3 text-gray-500 hover:bg-sky-100 hover:rounded py-1 px-3 hover:text-sky-700"
+              >
+                <fa-icon class="text-gray-700" [icon]="item.icon"></fa-icon>
+                {{ item.label }}
+              </a>
+            </li>
+          </ul>
         </div>
       </cdk-accordion-item>
     </cdk-accordion>

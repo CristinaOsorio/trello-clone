@@ -1,8 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { faTrello } from '@fortawesome/free-brands-svg-icons';
 import {
+  faBorderAll,
   faBox,
+  faChevronDown,
+  faChevronUp,
   faClock,
+  faCog,
+  faHeart,
+  faPlus,
+  faUsers,
   faWaveSquare,
 } from '@fortawesome/free-solid-svg-icons';
 
@@ -12,25 +19,64 @@ import {
 })
 export class BoardsComponent implements OnInit {
   faClock = faClock;
+  faChevronDown = faChevronDown;
+  faChevronUp = faChevronUp;
+  faTrello = faTrello;
+  faHeart = faHeart;
+  faBorderAll = faBorderAll;
+  faUsers = faUsers;
+  faCog = faCog;
+  faPlus = faPlus;
+
   menu = [
     {
-      title: 'Boards',
+      label: 'Boards',
       link: '',
       icon: faTrello,
     },
     {
-      title: 'Template',
+      label: 'Template',
       link: '',
       icon: faBox,
     },
     {
-      title: 'Home',
+      label: 'Home',
       link: '',
       icon: faWaveSquare,
+    },
+  ];
+
+  workspaceMenu = [
+    {
+      label: 'Boards',
+      icon: faTrello,
+    },
+    {
+      label: 'Highlights',
+      icon: faHeart,
+    },
+    {
+      label: 'Views',
+      icon: faBorderAll,
+    },
+    {
+      label: 'Members',
+      icon: faUsers,
+    },
+    {
+      label: 'Settings',
+      icon: faCog,
     },
   ];
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  get iconChevron() {
+    return {
+      faChevronDown: true,
+      faChevronUp: true,
+    };
+  }
 }
