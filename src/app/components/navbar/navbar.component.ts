@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faBell, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-navbar',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
   isOpen = false;
+
+  faBell = faBell;
+  faInfoCircle = faInfoCircle;
 
   constructor() {}
 
