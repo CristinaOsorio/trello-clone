@@ -20,6 +20,9 @@ export class BtnComponent implements OnInit {
       'bg-primary-700': this.color === 'primary',
       'hover:bg-primary-800': this.color === 'primary',
       'focus:ring-primary-300': this.color === 'primary',
+      'bg-sky-700': this.color === 'sky',
+      'hover:bg-sky-800': this.color === 'sky',
+      'focus:ring-sky-300': this.color === 'sky',
     };
   }
 }
