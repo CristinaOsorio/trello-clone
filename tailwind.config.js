@@ -9,6 +9,13 @@ module.exports = {
         success: colors.green,
         primary: colors.blue,
       },
+      container: {
+        screens: {
+          mobile: "600px",
+          tablet: "900px",
+          desktop: "1200px",
+        },
+      },
     },
   },
   plugins: [require("@tailwindcss/forms")],
