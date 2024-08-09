@@ -9,6 +9,18 @@
         >
       </li>
     </ul>
+    <cdk-accordion>
+      <cdk-accordion-item #accordionMenu="cdkAccordionItem">
+        <button type="button" (click)="accordionMenu.toggle()">
+          My workspace
+        </button>
+        <div [style.display]="accordionMenu.expanded ? '' : 'none'">
+          Panel
+          <p>asd</p>
+          <p>asd</p>
+        </div>
+      </cdk-accordion-item>
+    </cdk-accordion>
   </div>
   <div class="w-full">
     <h1 class="text-lg font-bold mb-4 text-gray-700">
