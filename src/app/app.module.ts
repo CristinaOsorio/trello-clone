@@ -7,6 +7,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { BtnComponent } from './components/btn/btn.component';
 import { BoardsComponent } from './pages/boards/boards.component';
 import { NavbarComponent } from './components/navbar/navbar.component';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
     BoardsComponent,
     NavbarComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule],
+  imports: [BrowserModule, AppRoutingModule, OverlayModule],
   providers: [],
   bootstrap: [AppComponent],
 })

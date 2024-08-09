@@ -29,6 +29,9 @@
         class="flex rounded-full"
         aria-expanded="false"
         type="button"
+        (click)="isOpen = !isOpen"
+        cdkOverlayOrigin
+        #menuOverlay="cdkOverlayOrigin"
       >
         <img
           class="w-8 h-8 rounded-full"
@@ -39,3 +42,11 @@
     </div>
   </div>
 </nav>
+
+<ng-template
+  cdkConnectedOverlay
+  [cdkConnectedOverlayOrigin]="menuOverlay"
+  [cdkConnectedOverlayOpen]="!isOpen"
+>
+  <h1>Menu</h1>
+</ng-template>
