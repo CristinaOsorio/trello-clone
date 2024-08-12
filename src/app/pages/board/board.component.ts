@@ -5,6 +5,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { Board, Task } from './../../models/list.interface';
+import { FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-board',
@@ -22,6 +23,8 @@ import { Board, Task } from './../../models/list.interface';
   ],
 })
 export class BoardComponent implements OnInit {
+  newColumn = new FormControl('', [Validators.required]);
+
   columns: Board[] = [
     {
       id: 'toDo',
@@ -88,5 +91,20 @@ export class BoardComponent implements OnInit {
         event.currentIndex
       );
     }
+  }
+
+  addColumn() {
+    if (this.newColumn.valid) {
+      this.columns.push({
+        id: this.generateRandomId(),
+        title: `${this.newColumn.value}`,
+        tasks: [],
+      });
+      this.newColumn.reset();
+    }
+  }
+
+  generateRandomId(): string {
+    return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
   }
 }
