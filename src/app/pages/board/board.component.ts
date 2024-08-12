@@ -4,7 +4,7 @@ import {
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
-import { Task } from './../../models/list.interface';
+import { Board, Task } from './../../models/list.interface';
 
 @Component({
   selector: 'app-board',
@@ -22,38 +22,56 @@ import { Task } from './../../models/list.interface';
   ],
 })
 export class BoardComponent implements OnInit {
-  toDo: Task[] = [
-    { title: 'Task 1', description: 'Lorem ipsum dolor sit amet' },
-    { title: 'Task 2', description: 'Consectetur adipiscing elit' },
-    { title: 'Task 3', description: 'Ut enim ad minim veniam' },
+  columns: Board[] = [
     {
-      title: 'Task 4',
-      description:
-        'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+      id: 'toDo',
+      title: 'To Do',
+      tasks: [
+        { title: 'Task 1', description: 'Lorem ipsum dolor sit amet' },
+        { title: 'Task 2', description: 'Consectetur adipiscing elit' },
+        { title: 'Task 3', description: 'Ut enim ad minim veniam' },
+        {
+          title: 'Task 4',
+          description:
+            'Quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat',
+        },
+      ],
     },
-  ];
-  doing: Task[] = [
     {
-      title: 'Task 5',
-      description:
-        'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+      id: 'doing',
+      title: 'Doing',
+      tasks: [
+        {
+          title: 'Task 5',
+          description:
+            'Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur',
+        },
+        {
+          title: 'Task 6',
+          description: 'Excepteur sint occaecat cupidatat non proident',
+        },
+      ],
     },
     {
-      title: 'Task 6',
-      description: 'Excepteur sint occaecat cupidatat non proident',
-    },
-  ];
-  done: Task[] = [
-    {
-      title: 'Task 7',
-      description:
-        'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+      id: 'done',
+      title: 'Done',
+      tasks: [
+        {
+          title: 'Task 7',
+          description:
+            'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua',
+        },
+      ],
     },
   ];
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  get columnsIds() {
+    return this.columns.map((column) => column.id);
+  }
 
   drop(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
