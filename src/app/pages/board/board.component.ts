@@ -3,47 +3,57 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 import { Board, Task } from './../../models/list.interface';
 import { FormControl, Validators } from '@angular/forms';
+import {
+  faAngleDoubleUp,
+  faAngleDown,
+  faBolt,
+  faChartBar,
+  faEllipsisH,
+  faFilter,
+  faLink,
+  faLock,
+  faPlus,
+  faRocket,
+  faShare,
+  faStar,
+  faTimes,
+  faUnlock,
+} from '@fortawesome/free-solid-svg-icons';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styles: [
-    `
-      .cdk-drop-list-dragging .cdk-drag {
-        transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-      }
-
-      .cdk-drag-animating {
-        transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
-      }
-
-      ::-webkit-scrollbar {
-        width: 8px;
-        height: 8px;
-      }
-
-      ::-webkit-scrollbar-thumb {
-        background-color: rgba(156, 163, 175, var(--tw-bg-opacity));
-        border-radius: 4px;
-      }
-
-      ::-webkit-scrollbar-track {
-        background-color: rgba(229, 231, 235, var(--tw-bg-opacity));
-        border-radius: 4px;
-      }
-
-      /* Agrega un efecto hover a la barra de desplazamiento */
-      ::-webkit-scrollbar-thumb:hover {
-        background-color: rgba(107, 114, 128, var(--tw-bg-opacity));
-      }
-    `,
-  ],
+  styleUrls: ['./board.component.css'],
 })
 export class BoardComponent implements OnInit {
+  faEllipses = faEllipsisH;
+  faArrow = faLink;
+  faClose = faTimes;
+  faPlus = faPlus;
+  faChar = faChartBar;
+  faArrowLeft = faAngleDown;
+  faStar = faStar;
+  faLock = faLock;
+  faAngleUp = faAngleDoubleUp;
+  faShared = faShare;
+  faFilter = faFilter;
+  faBolt = faBolt;
+  faRocket = faRocket;
+
+  isOpen = false;
+
   newColumn = new FormControl('', [Validators.required]);
+  overlayRefs: OverlayRef[] = [];
 
   columns: Board[] = [
     {
@@ -88,15 +98,22 @@ export class BoardComponent implements OnInit {
     },
   ];
 
-  constructor() {}
+  constructor(
+    private overlay: Overlay,
+    private viewContainerRef: ViewContainerRef
+  ) {}
 
   ngOnInit(): void {}
+
+  ngOnDestroy(): void {
+    this.overlayRefs.forEach((ref) => ref?.dispose());
+  }
 
   get columnsIds() {
     return this.columns.map((column) => column.id);
   }
 
-  drop(event: CdkDragDrop<Task[]>) {
+  dropTask(event: CdkDragDrop<Task[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(
         event.container.data,
@@ -113,6 +130,14 @@ export class BoardComponent implements OnInit {
     }
   }
 
+  dropBoard(event: CdkDragDrop<Board[]>) {
+    moveItemInArray(
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex
+    );
+  }
+
   addColumn() {
     if (this.newColumn.valid) {
       this.columns.push({
@@ -126,5 +151,46 @@ export class BoardComponent implements OnInit {
 
   generateRandomId(): string {
     return `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  }
+  openOverlay(
+    index: number,
+    event: MouseEvent,
+    templateRef: TemplateRef<any>
+  ): void {
+    this.closeOverlay(index);
+
+    const positionStrategy = this.overlay
+      .position()
+      .flexibleConnectedTo(event.target as HTMLElement)
+      .withPositions([
+        {
+          originX: 'center',
+          originY: 'bottom',
+          overlayX: 'center',
+          overlayY: 'top',
+        },
+      ]);
+
+    const overlayRef = this.overlay.create({
+      positionStrategy,
+      hasBackdrop: true,
+      backdropClass: 'cdk-overlay-transparent-backdrop',
+    });
+
+    overlayRef.backdropClick().subscribe(() => this.closeOverlay(index));
+
+    const portal = new TemplatePortal(templateRef, this.viewContainerRef, {
+      item: this.columns[index],
+      close: () => this.closeOverlay(index),
+    });
+
+    overlayRef.attach(portal);
+    this.overlayRefs[index] = overlayRef;
+  }
+
+  closeOverlay(index: number): void {
+    if (this.overlayRefs[index]) {
+      this.overlayRefs[index].dispose();
+    }
   }
 }

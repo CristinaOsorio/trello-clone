@@ -2,26 +2,119 @@
   <app-navbar></app-navbar>
   <div class="w-full grow bg-sky-600 px-4 pb-4">
     <div class="flex flex-col h-full">
-      <div>
-        <h2 class="text-xl font-bold text-white my-4">Demo Board</h2>
+      <div class="flex flex-row w-full justify-between py-4">
+        <div class="flex gap-3 content-center items-center">
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faChar"></fa-icon>
+            Board
+            <fa-icon [icon]="faArrowLeft" class="ml-2"></fa-icon>
+          </button>
+          <h2 class="text-xl font-bold text-white">Demo</h2>
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faStar"></fa-icon>
+          </button>
+          <div class="border-l-2 h-6 opacity-25 border-l-white"></div>
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            Cristina's workspace
+          </button>
+
+          <div class="border-l-2 h-6 opacity-25 border-l-white"></div>
+
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faLock"></fa-icon>
+            Private
+          </button>
+          <div class="relative">
+            <img
+              class="w-10 h-10 rounded-full"
+              src="https://picsum.photos/400/400"
+              alt=""
+            />
+            <fa-icon
+              class="bottom-3 left-8 absolute w-3.5 h-2.5 border-1 border-white rounded-full text-white"
+              [icon]="faAngleUp"
+            >
+            </fa-icon>
+          </div>
+          <button
+            class="text-gray-900 bg-white hover:bg-blue-800 hover:text-white focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faShared"></fa-icon>
+            Share
+          </button>
+        </div>
+        <div class="flex flex-row gap-2">
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faRocket"></fa-icon>
+            Power-Ups
+          </button>
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faBolt"></fa-icon>
+            Automation
+          </button>
+
+          <div class="border-l-2 h-6 opacity-25 border-l-white my-auto"></div>
+
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faFilter"></fa-icon>
+            Filter
+          </button>
+          <button
+            class="text-white bg-white/20 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 rounded text-sm px-4 py-2 focus:outline-none"
+          >
+            <fa-icon [icon]="faEllipses"></fa-icon>
+            Show menu
+          </button>
+        </div>
       </div>
+
       <div
         class="flex grow items-start w-full h-full overflow-x-scroll"
         cdkDropListGroup
+        cdkDropList
+        #columnList="cdkDropList"
+        (cdkDropListDropped)="dropBoard($event)"
+        cdkDropListOrientation="horizontal"
+        [cdkDropListData]="columns"
       >
         <div
+          cdkDrag
           class="rounded bg-gray-200 w-72 p-2 mr-3 shrink-0"
-          *ngFor="let column of columns"
+          *ngFor="let column of columns; let i = index"
         >
           <div class="flex justify-between py-1">
-            <h3 class="text-sm font-bold ml-2">{{ column.title }}</h3>
+            <h3 class="text-gray-700 text-sm font-bold ml-2">
+              {{ column.title }}
+            </h3>
+            <button
+              type="button"
+              class="text-gray-700 hover:bg-blue-100 hover:text-gray-500 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-full text-sm p-1 text-center inline-flex items-center"
+              (click)="openOverlay(i, $event, overlayTemplate)"
+            >
+              <fa-icon [icon]="faEllipses"></fa-icon>
+            </button>
           </div>
 
           <div
             class="text-sm mt-2 min-h-[2.5rem]"
             cdkDropList
             #toDoList="cdkDropList"
-            (cdkDropListDropped)="drop($event)"
+            (cdkDropListDropped)="dropTask($event)"
+            (click)="$event.stopPropagation()"
             [cdkDropListData]="column.tasks"
             [id]="column.id"
             [cdkDropListConnectedTo]="columnsIds"
@@ -29,10 +122,17 @@
             <div
               cdkDrag
               *ngFor="let task of column.tasks"
-              class="bg-white shadow p-2 rounded mt-2 border-b border-x-gray-300 cursor-pointer hover:bg-gray-400"
+              class="bg-white shadow p-2 rounded mt-2 border-b border-x-gray-300 cursor-pointer hover:bg-blue-100"
             >
               {{ task.title }}
             </div>
+
+            <button
+              class="w-full p-2 rounded mt-2 cursor-pointer text-gray-500 hover:bg-blue-500 hover:text-white"
+            >
+              <fa-icon [icon]="faPlus"></fa-icon>
+              Add a card
+            </button>
           </div>
         </div>
         <div class="rounded bg-gray-200 w-72 p-2 mr-3 shrink-0">
@@ -55,3 +155,118 @@
     </div>
   </div>
 </div>
+
+<ng-template #overlayTemplate let-column="column" let-close="close">
+  <div
+    class="z-50 my-4 w-60 text-base list-none bg-white rounded divide-y divide-gray-100 shadow"
+  >
+    <div class="py-3 px-4 flex justify-between">
+      <span
+        class="block text-sm text-center text-gray-500 mx-auto font-semibold"
+        >List Action</span
+      >
+      <button (click)="close()" class="block text-sm">
+        <fa-icon class="text-gray-500" [icon]="faClose"></fa-icon>
+      </button>
+    </div>
+    <ul class="py-1">
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Add Card...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Copy List...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Move List...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Watch</a
+        >
+      </li>
+    </ul>
+    <ul class="py-1">
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Sort By...</a
+        >
+      </li>
+    </ul>
+    <ul class="py-1">
+      <small class="py-2 px-4 text-xs text-gray-700 font-semibold"
+        >Automation</small
+      >
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >When a card is added to the list...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Every day, sort list by...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Every Monday, sort list by...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+        >
+          Create a custom rule
+          <fa-icon [icon]="faArrow"></fa-icon>
+        </a>
+      </li>
+    </ul>
+    <ul class="py-1">
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Move all cards in this list...</a
+        >
+      </li>
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Archive cards in this list...</a
+        >
+      </li>
+    </ul>
+    <ul class="py-1">
+      <li>
+        <a
+          href="#"
+          class="block py-2 px-4 text-sm text-gray-700 hover:bg-blue-100"
+          >Archive this list</a
+        >
+      </li>
+    </ul>
+  </div>
+</ng-template>
