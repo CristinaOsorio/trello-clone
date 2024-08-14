@@ -121,6 +121,7 @@
           >
             <div
               cdkDrag
+              (click)="openDialog()"
               *ngFor="let task of column.tasks"
               class="bg-white shadow p-2 rounded mt-2 border-b border-x-gray-300 cursor-pointer hover:bg-blue-100"
             >

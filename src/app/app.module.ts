@@ -12,7 +12,9 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { CdkAccordionModule } from '@angular/cdk/accordion';
 import { BoardComponent } from './pages/board/board.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DialogModule } from '@angular/cdk/dialog';
 import { ReactiveFormsModule } from '@angular/forms';
+import { TodoDialogComponent } from './components/todo-dialog/todo-dialog.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +24,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     BoardsComponent,
     NavbarComponent,
     BoardComponent,
+    TodoDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,6 +34,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FontAwesomeModule,
     CdkAccordionModule,
     DragDropModule,
+    DialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

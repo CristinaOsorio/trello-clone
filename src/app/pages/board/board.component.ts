@@ -1,15 +1,9 @@
 import {
-  CdkDragDrop,
-  moveItemInArray,
-  transferArrayItem,
-} from '@angular/cdk/drag-drop';
-import {
   Component,
   OnInit,
   TemplateRef,
   ViewContainerRef,
 } from '@angular/core';
-import { Board, Task } from './../../models/list.interface';
 import { FormControl, Validators } from '@angular/forms';
 import {
   faAngleDoubleUp,
@@ -25,11 +19,19 @@ import {
   faShare,
   faStar,
   faTimes,
-  faUnlock,
 } from '@fortawesome/free-solid-svg-icons';
+
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
+import { Dialog } from '@angular/cdk/dialog';
 
+import { TodoDialogComponent } from './../../components/todo-dialog/todo-dialog.component';
+import { Board, Task } from './../../models/list.interface';
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
@@ -100,13 +102,22 @@ export class BoardComponent implements OnInit {
 
   constructor(
     private overlay: Overlay,
-    private viewContainerRef: ViewContainerRef
+    private viewContainerRef: ViewContainerRef,
+    private dialog: Dialog
   ) {}
 
   ngOnInit(): void {}
 
   ngOnDestroy(): void {
     this.overlayRefs.forEach((ref) => ref?.dispose());
+  }
+
+  openDialog() {
+    this.dialog.open(TodoDialogComponent, {
+      width: '70vw',
+      height: '90vh',
+      panelClass: 'overflow-y-auto',
+    });
   }
 
   get columnsIds() {
