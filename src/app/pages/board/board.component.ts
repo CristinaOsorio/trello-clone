@@ -114,7 +114,7 @@ export class BoardComponent implements OnInit {
 
   openDialog(task: Task, column: Board) {
     this.dialog.open(TodoDialogComponent, {
-      width: '70vw',
+      width: '60vw',
       height: '90vh',
       panelClass: 'overflow-y-auto',
       data: {
