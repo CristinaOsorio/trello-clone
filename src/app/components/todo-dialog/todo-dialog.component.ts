@@ -1,5 +1,5 @@
-import { DialogRef } from '@angular/cdk/dialog';
-import { Component, OnInit } from '@angular/core';
+import { DIALOG_DATA, DialogRef } from '@angular/cdk/dialog';
+import { Component, Inject, OnInit } from '@angular/core';
 import {
   faAlignLeft,
   faBars,
@@ -16,6 +16,8 @@ import {
   faTimes,
   faUser,
 } from '@fortawesome/free-solid-svg-icons';
+
+import { DetailsTask } from './../../models/details-task.interface';
 
 @Component({
   selector: 'app-todo-dialog',
@@ -37,7 +39,14 @@ export class TodoDialogComponent implements OnInit {
   faAlignLeft = faAlignLeft;
   faListUl = faListUl;
 
-  constructor(private dialogRef: DialogRef) {}
+  detailsTask!: DetailsTask;
+
+  constructor(
+    private dialogRef: DialogRef<DetailsTask>,
+    @Inject(DIALOG_DATA) data: DetailsTask
+  ) {
+    this.detailsTask = { ...data };
+  }
 
   ngOnInit(): void {}
 

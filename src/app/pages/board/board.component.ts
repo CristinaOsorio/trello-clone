@@ -112,11 +112,18 @@ export class BoardComponent implements OnInit {
     this.overlayRefs.forEach((ref) => ref?.dispose());
   }
 
-  openDialog() {
+  openDialog(task: Task, column: Board) {
     this.dialog.open(TodoDialogComponent, {
       width: '70vw',
       height: '90vh',
       panelClass: 'overflow-y-auto',
+      data: {
+        task,
+        column: {
+          id: column.id,
+          title: column.title,
+        },
+      },
     });
   }
 

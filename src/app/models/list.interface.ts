@@ -3,8 +3,11 @@ export interface Task {
   description: string;
 }
 
-export interface Board {
+export interface Board extends Column {
+  tasks: Task[];
+}
+
+export interface Column {
   id: string;
   title: string;
-  tasks: Task[];
 }
